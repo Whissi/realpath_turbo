@@ -5,5 +5,3 @@ if test "$PHP_TURBO_REALPATH" = "yes"; then
   AC_DEFINE(HAVE_TURBO_REALPATH, 1, [Whether you have turbo realpath module])
   PHP_NEW_EXTENSION(turbo_realpath, turbo_realpath.c, $ext_shared)
 fi
-
-cp modules/*.so /usr/lib/php/modules
