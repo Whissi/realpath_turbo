@@ -1,7 +1,7 @@
 #ifndef PHP_TURBO_H
 #define PHP_TURBO_H 1
 
-#define PHP_TURBO_REALPATH_VERSION "1.0"
+#define PHP_TURBO_REALPATH_VERSION "1.1"
 #define PHP_TURBO_REALPATH_EXTNAME "turbo_realpath"
 
 PHP_RINIT_FUNCTION(turbo_realpath);
