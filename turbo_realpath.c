@@ -9,7 +9,7 @@
 #include "php_ini.h"
 #include "turbo_realpath.h"
 
-static function_entry turbo_realpath_functions[] = {
+static zend_function_entry turbo_realpath_functions[] = {
     {NULL, NULL, NULL}
 };
 
