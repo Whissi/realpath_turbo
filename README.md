@@ -101,3 +101,8 @@ See http://www.php.net/security-note.php for more information.
  - http://php.webtutor.pl/en/2011/07/12/running-php-on-nfs-version-1-2-of-turbo_realpath-extension/
 
  - http://php.webtutor.pl/en/2013/05/13/running-php-on-nfs-version-1-3-of-turbo_realpath-extension/
+
+
+## PHP7-patch
+
+Patched for PHP7 by Mikk3lRo. *No warranties!*
