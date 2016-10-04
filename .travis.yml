@@ -10,11 +10,8 @@ php:
   - 5.6
 
 before_install: phpize
-
 install: ./configure --prefix=/usr && sudo make install
 
-before_install: echo "extension = turbo_realpath.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-
+before_script: echo "extension = turbo_realpath.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 #script: make test
-
 script: php --rextinfo turbo_realpath
