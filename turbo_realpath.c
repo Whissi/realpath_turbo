@@ -60,7 +60,7 @@ PHP_RINIT_FUNCTION(turbo_realpath)
         zend_string *safe_mode2;
         safe_mode2 = zend_string_init(safe_mode, strlen(safe_mode), 0);
         zend_string *smstring;
-        smstring = zend_string_init("open_basedir", sizeof("open_basedir") - 1, 0);
+        smstring = zend_string_init("safe_mode", sizeof("safe_mode") - 1, 0);
         zend_alter_ini_entry(smstring, safe_mode2, PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
     }
 
