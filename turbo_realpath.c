@@ -34,9 +34,9 @@ zend_module_entry turbo_realpath_module_entry = {
 ZEND_GET_MODULE(turbo_realpath)
 
 PHP_INI_BEGIN()
-PHP_INI_ENTRY("realpath_cache_safe_mode", "", PHP_INI_SYSTEM, NULL)
-PHP_INI_ENTRY("realpath_cache_basedir", "", PHP_INI_SYSTEM, NULL)
-PHP_INI_ENTRY("realpath_cache_security", "", PHP_INI_SYSTEM, NULL)
+	PHP_INI_ENTRY("realpath_cache_safe_mode", "", PHP_INI_SYSTEM, NULL)
+	PHP_INI_ENTRY("realpath_cache_basedir",   "", PHP_INI_SYSTEM, NULL)
+	PHP_INI_ENTRY("realpath_cache_security",  "", PHP_INI_SYSTEM, NULL)
 PHP_INI_END()
 
 PHP_RINIT_FUNCTION(turbo_realpath)
@@ -57,22 +57,22 @@ PHP_RINIT_FUNCTION(turbo_realpath)
 	}
 
 	switch(security) {
-	// check disabled functions for symlink and link entries
-	case 1:
-		if(strlen(disabled_functions) > 0) {
-		new_functions = emalloc(strlen(disabled_functions) + strlen(risky_functions) + 2);
-		strcpy(new_functions, risky_functions);
-		strcat(new_functions, ",");
-		strcat(new_functions, disabled_functions);
-		} else {
-		new_functions = emalloc(strlen(risky_functions) + 1);
-		strcpy(new_functions, risky_functions);
-		}
-		zend_alter_ini_entry("disable_functions", sizeof("disable_functions"), new_functions, strlen(new_functions), PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
-		efree(new_functions);
-		break;
-	default:
-		break;
+		case 1:
+			// check disabled functions for symlink and link entries
+			if(strlen(disabled_functions) > 0) {
+				new_functions = emalloc(strlen(disabled_functions) + strlen(risky_functions) + 2);
+				strcpy(new_functions, risky_functions);
+				strcat(new_functions, ",");
+				strcat(new_functions, disabled_functions);
+			} else {
+				new_functions = emalloc(strlen(risky_functions) + 1);
+				strcpy(new_functions, risky_functions);
+			}
+			zend_alter_ini_entry("disable_functions", sizeof("disable_functions"), new_functions, strlen(new_functions), PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
+			efree(new_functions);
+			break;
+		default:
+			break;
 	}
 }
 
