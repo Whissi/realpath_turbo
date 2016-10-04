@@ -8,7 +8,7 @@
 # include "config.h"
 #endif
 
-#define PHP_TURBO_REALPATH_VERSION "1.3.1"
+#define PHP_TURBO_REALPATH_VERSION "2.0.0 Beta 1"
 #define PHP_TURBO_REALPATH_EXTNAME "turbo_realpath"
 
 PHP_RINIT_FUNCTION(turbo_realpath);
