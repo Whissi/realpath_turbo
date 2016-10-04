@@ -7,6 +7,7 @@
 #include "SAPI.h"
 #include "zend_globals.h"
 #include "php_ini.h"
+#include "ext/standard/info.h"
 #include "turbo_realpath.h"
 
 static zend_function_entry turbo_realpath_functions[] = {
