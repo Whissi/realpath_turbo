@@ -19,7 +19,7 @@ workaround:
 ## How *realpath_turbo* works
 
 1. Instead of setting `open_basedir` you will set
-   `realpath_cache_basedir`.
+   `realpath_turbo.open_basedir`.
 
    Because now `open_basedir` isn't set, PHP will **not** deactivate the
    realpath cache.
@@ -45,28 +45,29 @@ workaround:
    # make install
    ```
 
-3. Adjust your `php.ini` to load and configure *turbo_realpath* extension.
+3. Adjust your `php.ini` to load and configure *realpath_turbo* extension.
 
 
 ## Configuration
 
 ```ini
 ; you have to load the extension first
-extension=turbo_realpath.so
+extension=realpath_turbo.so
 
-; realpath_turbo security mode
+; Disable dangerous functions (see the warning in the README file for
+; details).
 ; Possible values:
 ;   0 - Ignore potential security issues
 ;   1 - Disable dangerous PHP functions (link,symlink)
-realpath_cache_security = 1
+realpath_turbo.disable_dangerous_functions = 1
 
-; Set realpath_cache_basedir to whatever you want to set open_basedir to
-realpath_cache_basedir = "/var/www/html/drupal:/usr/share/php"
+; Set realpath_turbo.open_basedir to whatever you want to set open_basedir to
+realpath_turbo.open_basedir = "/var/www/html/drupal:/usr/share/php"
 
 ; Disable PHP's open_basedir directive so that the realpath cache won't be
 ; disabled.
-; Remember, turbo_realpath will set this option later to the
-; realpath_cache_basedir value.
+; Remember, realpath_turbo will set this option later to the
+; realpath_turbo.open_basedir value.
 open_basedir = ""
 ```
 
