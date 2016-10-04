@@ -26,15 +26,19 @@ zend_module_entry turbo_realpath_module_entry = {
 ZEND_GET_MODULE(turbo_realpath)
 
 PHP_INI_BEGIN()
-	PHP_INI_ENTRY("realpath_cache_safe_mode", "", PHP_INI_SYSTEM, NULL)
 	PHP_INI_ENTRY("realpath_cache_basedir",   "", PHP_INI_SYSTEM, NULL)
+#if (PHP_MAJOR_VERSION == 5) && (PHP_MINOR_VERSION < 4)
+	PHP_INI_ENTRY("realpath_cache_safe_mode", "", PHP_INI_SYSTEM, NULL)
+#endif
 	PHP_INI_ENTRY("realpath_cache_security",  "", PHP_INI_SYSTEM, NULL)
 PHP_INI_END()
 
 PHP_RINIT_FUNCTION(turbo_realpath)
 {
 	char *basedir = INI_STR("realpath_cache_basedir");
+#if (PHP_MAJOR_VERSION == 5) && (PHP_MINOR_VERSION < 4)
 	char *safe_mode = INI_STR("realpath_cache_safe_mode");
+#endif
 	char *disabled_functions = INI_STR("disable_functions");
 	char *risky_functions = "link,symlink";
 	char *new_functions;
@@ -44,9 +48,11 @@ PHP_RINIT_FUNCTION(turbo_realpath)
 		zend_alter_ini_entry("open_basedir", sizeof("open_basedir"), basedir, strlen(basedir), PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
 	}
 
+#if (PHP_MAJOR_VERSION == 5) && (PHP_MINOR_VERSION < 4)
 	if(strlen(safe_mode) > 0) {
 		zend_alter_ini_entry("safe_mode", sizeof("safe_mode"), safe_mode, strlen(safe_mode), PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
 	}
+#endif
 
 	switch(security) {
 		case 1:
