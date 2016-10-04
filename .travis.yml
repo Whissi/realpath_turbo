@@ -11,7 +11,9 @@ php:
 
 before_install: phpize
 
-install: ./configure --prefix=/usr && sudo make install && echo 'extension = turbo_realpath.so' >> /etc/php5/cli/php.ini
+install: ./configure --prefix=/usr && sudo make install
+
+before_install: echo "extension = turbo_realpath.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 #script: make test
 
