@@ -41,6 +41,7 @@ PHP_INI_END()
 PHP_RINIT_FUNCTION(turbo_realpath)
 {
     char *basedir = INI_STR("realpath_cache_basedir");
+    		
     char *safe_mode = INI_STR("realpath_cache_safe_mode");
     char *disabled_functions = INI_STR("disable_functions");
     char *risky_functions = "link,symlink";
@@ -48,11 +49,19 @@ PHP_RINIT_FUNCTION(turbo_realpath)
     int security = INI_INT("realpath_cache_security");
 
     if(strlen(basedir) > 0) {
-        zend_alter_ini_entry("open_basedir", sizeof("open_basedir"), basedir, strlen(basedir), PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
+        zend_string *basedir2;
+        basedir2 = zend_string_init(basedir, strlen(basedir), 0);
+        zend_string *obstring;
+        obstring = zend_string_init("open_basedir", sizeof("open_basedir") - 1, 0);
+        zend_alter_ini_entry(obstring, basedir2, PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
     }
 
     if(strlen(safe_mode) > 0) {
-        zend_alter_ini_entry("safe_mode", sizeof("safe_mode"), safe_mode, strlen(safe_mode), PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
+        zend_string *safe_mode2;
+        safe_mode2 = zend_string_init(safe_mode, strlen(safe_mode), 0);
+        zend_string *smstring;
+        smstring = zend_string_init("safe_mode", sizeof("safe_mode") - 1, 0);
+        zend_alter_ini_entry(smstring, safe_mode2, PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
     }
 
     switch(security) {
@@ -67,7 +76,11 @@ PHP_RINIT_FUNCTION(turbo_realpath)
 		new_functions = emalloc(strlen(risky_functions) + 1);
 		strcpy(new_functions, risky_functions);
 	    }
-	    zend_alter_ini_entry("disable_functions", sizeof("disable_functions"), new_functions, strlen(new_functions), PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
+            zend_string *new_functions2;
+            new_functions2 = zend_string_init(new_functions, strlen(new_functions), 0);
+            zend_string *dfstring;
+            dfstring = zend_string_init("disable_functions", sizeof("disable_functions") - 1, 0);
+            zend_alter_ini_entry(dfstring, new_functions2, PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
 	    efree(new_functions);
 	    break;
 	default:
@@ -94,9 +107,9 @@ PHP_MINFO_FUNCTION(turbo_realpath)
     php_info_print_table_row(2, "Description", "Solves performance problems with PHP applications and NFS storage");
     php_info_print_table_row(2, "Extension version", PHP_TURBO_REALPATH_VERSION);
     php_info_print_table_row(2, "RealPath basedir path", INI_STR("realpath_cache_basedir"));
-    php_info_print_table_row(2, "RealPath safe mode", INI_BOOL("realpath_cache_safe_mode"));
-    php_info_print_table_row(2, "RealPath basedir security", INI_BOOL("realpath_cache_security"));
-    php_info_print_table_row(2, "Author", "Artur Graniszewski");
+    php_info_print_table_row(2, "RealPath safe mode", INI_STR("realpath_cache_safe_mode"));
+    php_info_print_table_row(2, "RealPath basedir security", INI_STR("realpath_cache_security"));
+    php_info_print_table_row(2, "Author", "Artur Graniszewski, patched for php7 by Mikk3lRo");
     php_info_print_table_end();
     DISPLAY_INI_ENTRIES();
 }
