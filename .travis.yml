@@ -14,4 +14,5 @@ before_install: phpize
 install: ./configure --prefix=/usr && sudo make install && echo 'extension = turbo_realpath.so' >> /etc/php5/cli/php.ini
 
 #script: make test
+
 script: php --rextinfo turbo_realpath
