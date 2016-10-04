@@ -111,8 +111,9 @@ PHP_MINFO_FUNCTION(turbo_realpath)
 {
 	php_info_print_table_start();
 	php_info_print_table_header(2, "turbo_realpath support", "enabled");
-	php_info_print_table_row(2, "turbo_realpath version", PHP_TURBO_REALPATH_VERSION);
-	php_info_print_table_row(2, "turbo_realpath creator", "Artur Graniszewski");
+	php_info_print_table_row(2, "Version", PHP_TURBO_REALPATH_VERSION);
+	php_info_print_table_row(2, "Build Date", __DATE__ " " __TIME__);
+	php_info_print_table_row(2, "Creator", "Artur Graniszewski");
 	php_info_print_table_end();
 
 	DISPLAY_INI_ENTRIES();
