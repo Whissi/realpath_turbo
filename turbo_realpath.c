@@ -43,9 +43,21 @@ PHP_RINIT_FUNCTION(turbo_realpath)
 	char *risky_functions = "link,symlink";
 	char *new_functions;
 	int security = INI_INT("realpath_cache_security");
+#if PHP_MAJOR_VERSION >= 7
+	zend_string *ini_name, *ini_value;
+#endif
 
 	if(strlen(basedir) > 0) {
+#if PHP_MAJOR_VERSION < 7
 		zend_alter_ini_entry("open_basedir", sizeof("open_basedir"), basedir, strlen(basedir), PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
+#else
+		ini_name  = zend_string_init(ZEND_STRL("open_basedir"), 0);
+		ini_value = zend_string_init(basedir, strlen(basedir), 0);
+
+		zend_alter_ini_entry(ini_name, ini_value, PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
+		zend_string_release(ini_name);
+		zend_string_release(ini_value);
+#endif
 	}
 
 #if (PHP_MAJOR_VERSION == 5) && (PHP_MINOR_VERSION < 4)
@@ -66,7 +78,16 @@ PHP_RINIT_FUNCTION(turbo_realpath)
 				new_functions = emalloc(strlen(risky_functions) + 1);
 				strcpy(new_functions, risky_functions);
 			}
+#if PHP_MAJOR_VERSION < 7
 			zend_alter_ini_entry("disable_functions", sizeof("disable_functions"), new_functions, strlen(new_functions), PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
+#else
+			ini_name   = zend_string_init(ZEND_STRL("disable_functions"), 0);
+			ini_value  = zend_string_init(new_functions, strlen(new_functions), 0);
+
+			zend_alter_ini_entry(ini_name, ini_value, PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
+			zend_string_release(ini_name);
+			zend_string_release(ini_value);
+#endif
 			efree(new_functions);
 			break;
 		default:
