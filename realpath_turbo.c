@@ -26,33 +26,33 @@ zend_module_entry realpath_turbo_module_entry = {
 ZEND_GET_MODULE(realpath_turbo)
 
 PHP_INI_BEGIN()
-	PHP_INI_ENTRY("realpath_turbo.open_basedir",   "", PHP_INI_SYSTEM, NULL)
+	PHP_INI_ENTRY("realpath_turbo.open_basedir",                "",  PHP_INI_SYSTEM, NULL)
 #if (PHP_MAJOR_VERSION == 5) && (PHP_MINOR_VERSION < 4)
-	PHP_INI_ENTRY("realpath_turbo.safe_mode", "", PHP_INI_SYSTEM, NULL)
+	PHP_INI_ENTRY("realpath_turbo.safe_mode",                   "",  PHP_INI_SYSTEM, NULL)
 #endif
-	PHP_INI_ENTRY("realpath_turbo.disable_dangerous_functions",  "1", PHP_INI_SYSTEM, NULL)
+	PHP_INI_ENTRY("realpath_turbo.disable_dangerous_functions", "1", PHP_INI_SYSTEM, NULL)
 PHP_INI_END()
 
 PHP_RINIT_FUNCTION(realpath_turbo)
 {
-	char *basedir = INI_STR("realpath_turbo.open_basedir");
+	char *rpt_open_basedir = INI_STR("realpath_turbo.open_basedir");
 #if (PHP_MAJOR_VERSION == 5) && (PHP_MINOR_VERSION < 4)
-	char *safe_mode = INI_STR("realpath_turbo.safe_mode");
+	char *rpt_safe_mode = INI_STR("realpath_turbo.safe_mode");
 #endif
 	char *disabled_functions = INI_STR("disable_functions");
+	char *disabled_functions_new;
 	char *risky_functions = "link,symlink";
-	char *new_functions;
-	int security = INI_INT("realpath_turbo.disable_dangerous_functions");
+	int do_disable_dangerous_functions = INI_INT("realpath_turbo.disable_dangerous_functions");
 #if PHP_MAJOR_VERSION >= 7
 	zend_string *ini_name, *ini_value;
 #endif
 
-	if(strlen(basedir) > 0) {
+	if(strlen(rpt_open_basedir) > 0) {
 #if PHP_MAJOR_VERSION < 7
-		zend_alter_ini_entry("open_basedir", sizeof("open_basedir"), basedir, strlen(basedir), PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
+		zend_alter_ini_entry("open_basedir", sizeof("open_basedir"), rpt_open_basedir, strlen(rpt_open_basedir), PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
 #else
 		ini_name  = zend_string_init(ZEND_STRL("open_basedir"), 0);
-		ini_value = zend_string_init(basedir, strlen(basedir), 0);
+		ini_value = zend_string_init(rpt_open_basedir, strlen(rpt_open_basedir), 0);
 
 		zend_alter_ini_entry(ini_name, ini_value, PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
 		zend_string_release(ini_name);
@@ -61,33 +61,33 @@ PHP_RINIT_FUNCTION(realpath_turbo)
 	}
 
 #if (PHP_MAJOR_VERSION == 5) && (PHP_MINOR_VERSION < 4)
-	if(strlen(safe_mode) > 0) {
-		zend_alter_ini_entry("safe_mode", sizeof("safe_mode"), safe_mode, strlen(safe_mode), PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
+	if(strlen(rpt_safe_mode) > 0) {
+		zend_alter_ini_entry("safe_mode", sizeof("safe_mode"), rpt_safe_mode, strlen(rpt_safe_mode), PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
 	}
 #endif
 
-	if (security) {
+	if (do_disable_dangerous_functions) {
 		// check disabled functions for symlink and link entries
 		if(strlen(disabled_functions) > 0) {
-			new_functions = emalloc(strlen(disabled_functions) + strlen(risky_functions) + 2);
-			strcpy(new_functions, risky_functions);
-			strcat(new_functions, ",");
-			strcat(new_functions, disabled_functions);
+			disabled_functions_new = emalloc(strlen(disabled_functions) + strlen(risky_functions) + 2);
+			strcpy(disabled_functions_new, risky_functions);
+			strcat(disabled_functions_new, ",");
+			strcat(disabled_functions_new, disabled_functions);
 		} else {
-			new_functions = emalloc(strlen(risky_functions) + 1);
-			strcpy(new_functions, risky_functions);
+			disabled_functions_new = emalloc(strlen(risky_functions) + 1);
+			strcpy(disabled_functions_new, risky_functions);
 		}
 #if PHP_MAJOR_VERSION < 7
-		zend_alter_ini_entry("disable_functions", sizeof("disable_functions"), new_functions, strlen(new_functions), PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
+		zend_alter_ini_entry("disable_functions", sizeof("disable_functions"), disabled_functions_new, strlen(disabled_functions_new), PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
 #else
 		ini_name   = zend_string_init(ZEND_STRL("disable_functions"), 0);
-		ini_value  = zend_string_init(new_functions, strlen(new_functions), 0);
+		ini_value  = zend_string_init(disabled_functions_new, strlen(disabled_functions_new), 0);
 
 		zend_alter_ini_entry(ini_name, ini_value, PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
 		zend_string_release(ini_name);
 		zend_string_release(ini_value);
 #endif
-		efree(new_functions);
+		efree(disabled_functions_new);
 	}
 }
 
