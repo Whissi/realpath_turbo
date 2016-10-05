@@ -1,6 +1,5 @@
 #include "realpath_turbo.h"
-#include "php_ini.h"
-#include "ext/standard/info.h"
+#include "realpath_turbo_private.h"
 
 static zend_function_entry realpath_turbo_functions[] = {
 	{NULL, NULL, NULL}
@@ -10,7 +9,7 @@ zend_module_entry realpath_turbo_module_entry = {
 #if ZEND_MODULE_API_NO >= 20010901
 	STANDARD_MODULE_HEADER,
 #endif
-	PHP_REALPATH_TURBO_EXTNAME,
+	REALPATH_TURBO_EXTNAME,
 	realpath_turbo_functions,
 	PHP_MINIT(realpath_turbo),
 	PHP_MSHUTDOWN(realpath_turbo),
@@ -18,36 +17,40 @@ zend_module_entry realpath_turbo_module_entry = {
 	NULL,
 	PHP_MINFO(realpath_turbo),
 #if ZEND_MODULE_API_NO >= 20010901
-	PHP_REALPATH_TURBO_VERSION,
+	REALPATH_TURBO_VERSION,
 #endif
 	STANDARD_MODULE_PROPERTIES
 };
 
+ZEND_DECLARE_MODULE_GLOBALS(realpath_turbo)
+
+#ifdef COMPILE_DL_REALPATH_TURBO
 ZEND_GET_MODULE(realpath_turbo)
+#endif
 
 PHP_INI_BEGIN()
-	PHP_INI_ENTRY("realpath_turbo.open_basedir",                "",  PHP_INI_SYSTEM, NULL)
+	STD_PHP_INI_ENTRY("realpath_turbo.open_basedir",                  NULL, PHP_INI_SYSTEM, OnUpdateString, open_basedir, zend_realpath_turbo_globals, realpath_turbo_globals)
 #if (PHP_MAJOR_VERSION == 5) && (PHP_MINOR_VERSION < 4)
-	PHP_INI_ENTRY("realpath_turbo.safe_mode",                   "",  PHP_INI_SYSTEM, NULL)
+	STD_PHP_INI_BOOLEAN("realpath_turbo.safe_mode",                   "0", PHP_INI_SYSTEM, OnUpdateBool, safe_mode, zend_realpath_turbo_globals, realpath_turbo_globals)
 #endif
-	PHP_INI_ENTRY("realpath_turbo.disable_dangerous_functions", "1", PHP_INI_SYSTEM, NULL)
+	STD_PHP_INI_BOOLEAN("realpath_turbo.disable_dangerous_functions", "1", PHP_INI_SYSTEM, OnUpdateBool, disable_dangerous_functions, zend_realpath_turbo_globals, realpath_turbo_globals)
 PHP_INI_END()
 
 PHP_RINIT_FUNCTION(realpath_turbo)
 {
 	char *rpt_open_basedir = INI_STR("realpath_turbo.open_basedir");
 #if (PHP_MAJOR_VERSION == 5) && (PHP_MINOR_VERSION < 4)
-	char *rpt_safe_mode = INI_STR("realpath_turbo.safe_mode");
+	zend_bool *do_safe_mode = INI_BOOL("realpath_turbo.safe_mode");
 #endif
 	char *disabled_functions = INI_STR("disable_functions");
 	char *disabled_functions_new;
 	char *risky_functions = "link,symlink";
-	int do_disable_dangerous_functions = INI_INT("realpath_turbo.disable_dangerous_functions");
+	zend_bool do_disable_dangerous_functions = INI_BOOL("realpath_turbo.disable_dangerous_functions");
 #if PHP_MAJOR_VERSION >= 7
 	zend_string *ini_name, *ini_value;
 #endif
 
-	if(strlen(rpt_open_basedir) > 0) {
+	if(rpt_open_basedir) {
 #if PHP_MAJOR_VERSION < 7
 		zend_alter_ini_entry("open_basedir", sizeof("open_basedir"), rpt_open_basedir, strlen(rpt_open_basedir), PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
 #else
@@ -61,8 +64,8 @@ PHP_RINIT_FUNCTION(realpath_turbo)
 	}
 
 #if (PHP_MAJOR_VERSION == 5) && (PHP_MINOR_VERSION < 4)
-	if(strlen(rpt_safe_mode) > 0) {
-		zend_alter_ini_entry("safe_mode", sizeof("safe_mode"), rpt_safe_mode, strlen(rpt_safe_mode), PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
+	if(do_safe_mode) {
+		zend_alter_ini_entry("safe_mode", sizeof("safe_mode"), "1", 1, PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
 	}
 #endif
 
@@ -107,7 +110,7 @@ PHP_MINFO_FUNCTION(realpath_turbo)
 {
 	php_info_print_table_start();
 	php_info_print_table_header(2, "realpath_turbo support", "enabled");
-	php_info_print_table_row(2, "Version", PHP_REALPATH_TURBO_VERSION);
+	php_info_print_table_row(2, "Version", REALPATH_TURBO_VERSION);
 	php_info_print_table_row(2, "Build Date", __DATE__ " " __TIME__);
 	php_info_print_table_row(2, "Creator", "Artur Graniszewski");
 	php_info_print_table_end();
