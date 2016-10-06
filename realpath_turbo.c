@@ -6,9 +6,7 @@ static zend_function_entry realpath_turbo_functions[] = {
 };
 
 zend_module_entry realpath_turbo_module_entry = {
-#if ZEND_MODULE_API_NO >= 20010901
 	STANDARD_MODULE_HEADER,
-#endif
 	REALPATH_TURBO_EXTNAME,
 	realpath_turbo_functions,
 	PHP_MINIT(realpath_turbo),
@@ -16,10 +14,12 @@ zend_module_entry realpath_turbo_module_entry = {
 	PHP_RINIT(realpath_turbo),
 	NULL,
 	PHP_MINFO(realpath_turbo),
-#if ZEND_MODULE_API_NO >= 20010901
 	REALPATH_TURBO_VERSION,
-#endif
-	STANDARD_MODULE_PROPERTIES
+	PHP_MODULE_GLOBALS(realpath_turbo),
+	NULL,
+	NULL,
+	NULL,
+	STANDARD_MODULE_PROPERTIES_EX
 };
 
 ZEND_DECLARE_MODULE_GLOBALS(realpath_turbo)

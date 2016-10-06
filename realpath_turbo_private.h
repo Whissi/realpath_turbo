@@ -32,4 +32,6 @@ PHP_MSHUTDOWN_FUNCTION(realpath_turbo);
 #define MEMC_G(v) (realpath_turbo_globals.v)
 #endif
 
+extern ZEND_DECLARE_MODULE_GLOBALS(realpath_turbo);
+
 #endif /* REALPATH_TURBO_PRIVATE_H */
