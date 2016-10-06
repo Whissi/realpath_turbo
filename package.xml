@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package
+	packagerversion="1.9.4"
+	version="2.0"
+	xmlns="http://pear.php.net/dtd/package-2.0"
+	xmlns:tasks="http://pear.php.net/dtd/tasks-1.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+	http://pear.php.net/dtd/tasks-1.0.xsd
+	http://pear.php.net/dtd/package-2.0
+	http://pear.php.net/dtd/package-2.0.xsd"
+>
+	<name>realpath_turbo</name>
+	<channel>pecl.php.net</channel>
+	<summary>Use realpath cache despite open_basedir restriction</summary>
+	<description>
+		When PHP's open_basedir restriction is set, PHP disables the realpath cache for
+		security reasons. This may hurt your application performance. The realpath_turbo
+		PHP extension re-enables the realpath cache. Warning: This could be a security
+		problem in your environment! Please read the README for further information. 
+	</description>
+	<lead>
+		<name>Artur Graniszewski</name>
+		<active>no</active>
+	</lead>
+	<contributor>
+		<!-- PHP 5.4 support -->
+		<name>Sebastian Siemssen</name>
+	</contributor>
+	<lead>
+		<name>Thomas Deutschmann</name>
+		<user>Whissi</user>
+		<email>whissi@whissi.de</email>
+		<active>yes</active>
+	</lead>
+	<date>2016-10-06</date>
+	<version>
+		<release>2.0.0</release>
+	</version>
+	<stability>
+		<release>stable</release>
+	</stability>
+	<license>PHP 3.01</license>
+	<notes>
+		- TBD
+	</notes>
+	<contents />
+	<dependencies>
+		<required>
+			<php>
+				<min>5.4.0</min>
+				<max>8.0.0</max>
+			</php>
+		</required>
+	</dependencies>
+	<providesextension>realpath_turbo</providesextension>
+	<extsrcrelease />
+	<changelog />
+</package>
