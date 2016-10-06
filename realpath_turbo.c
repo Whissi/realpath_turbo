@@ -52,7 +52,11 @@ PHP_RINIT_FUNCTION(realpath_turbo)
 
 	if (rpt_open_basedir && *rpt_open_basedir) {
 		if (PG(open_basedir) && *PG(open_basedir)) {
+#if PHP_MAJOR_VERSION >= 7
 			php_error_docref(NULL, E_WARNING, "open_basedir already set! Please unset open_basedir and only use realpath_turbo.open_basedir option. realpath_turbo will not have any effect when open_basedir is already set.");
+#else
+			php_error_docref(NULL TSRMLS_CC, E_WARNING, "open_basedir already set! Please unset open_basedir and only use realpath_turbo.open_basedir option. realpath_turbo will not have any effect when open_basedir is already set.");
+#endif
 			return FAILURE;
 		}
 #if PHP_MAJOR_VERSION < 7
@@ -70,7 +74,7 @@ PHP_RINIT_FUNCTION(realpath_turbo)
 #if (PHP_MAJOR_VERSION == 5) && (PHP_MINOR_VERSION < 4)
 	if (do_safe_mode) {
 		if (PG(safe_mode) && *PG(safe_mode)) {
-			php_error_docref(NULL, E_WARNING, "safe_mode already set! Please disable safe_mode and only use realpath_turbo.safe_mode option. realpath_turbo will not have any effect when safe_mode is already enabled.");
+			php_error_docref(NULL TSRMLS_CC, E_WARNING, "safe_mode already set! Please disable safe_mode and only use realpath_turbo.safe_mode option. realpath_turbo will not have any effect when safe_mode is already enabled.");
 			return FAILURE;
 		}
 
