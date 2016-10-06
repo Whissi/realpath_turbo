@@ -69,6 +69,11 @@ PHP_RINIT_FUNCTION(realpath_turbo)
 
 #if (PHP_MAJOR_VERSION == 5) && (PHP_MINOR_VERSION < 4)
 	if (do_safe_mode) {
+		if (PG(safe_mode) && *PG(safe_mode)) {
+			php_error_docref(NULL, E_WARNING, "safe_mode already set! Please disable safe_mode and only use realpath_turbo.safe_mode option. realpath_turbo will not have any effect when safe_mode is already enabled.");
+			return FAILURE;
+		}
+
 		zend_alter_ini_entry("safe_mode", sizeof("safe_mode"), "1", 1, PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
 	}
 #endif
