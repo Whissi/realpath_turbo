@@ -51,6 +51,10 @@ PHP_RINIT_FUNCTION(realpath_turbo)
 #endif
 
 	if (rpt_open_basedir && *rpt_open_basedir) {
+		if (PG(open_basedir) && *PG(open_basedir)) {
+			php_error_docref(NULL, E_WARNING, "open_basedir already set! Please unset open_basedir and only use realpath_turbo.open_basedir option. realpath_turbo will not have any effect when open_basedir is already set.");
+			return FAILURE;
+		}
 #if PHP_MAJOR_VERSION < 7
 		zend_alter_ini_entry("open_basedir", sizeof("open_basedir"), rpt_open_basedir, strlen(rpt_open_basedir), PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
 #else
