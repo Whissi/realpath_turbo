@@ -50,7 +50,7 @@ PHP_RINIT_FUNCTION(realpath_turbo)
 	zend_string *ini_name, *ini_value;
 #endif
 
-	if(rpt_open_basedir) {
+	if(rpt_open_basedir && *rpt_open_basedir) {
 #if PHP_MAJOR_VERSION < 7
 		zend_alter_ini_entry("open_basedir", sizeof("open_basedir"), rpt_open_basedir, strlen(rpt_open_basedir), PHP_INI_SYSTEM, PHP_INI_STAGE_ACTIVATE);
 #else
