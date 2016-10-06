@@ -1,5 +1,8 @@
 # *realpath_turbo* – Use realpath cache despite *open_basedir* restriction
 
+[![Build 
+Status](https://travis-ci.org/Whissi/realpath_turbo.svg?branch=master)](https://travis-ci.org/Whissi/realpath_turbo)
+
 When you set PHP's open_basedir restriction, PHP will deactivate the
 realpath cache.
 
