@@ -27,12 +27,12 @@
 	</lead>
 	<date>2016-10-06</date>
 	<version>
-		<release>2.0.0 Beta 1</release>
+		<release>2.0.0</release>
 		<api>2.0.0</api>
 	</version>
 	<stability>
 		<release>beta</release>
-		<api>2.0.0</api>
+		<api>beta</api>
 	</stability>
 	<license uri="http://www.php.net/license">PHP License</license>
 	<notes>
