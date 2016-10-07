@@ -6,6 +6,7 @@ language: c
 addons:
  apt:
   packages:
+   - colormake
    - php5-cli
    - php-pear
 
@@ -28,8 +29,8 @@ env:
  - PHP=7.0 enable_debug=yes enable_maintainer_zts=yes
 
 before_script:
- - make -f travis/pecl/Makefile php
- - make -f travis/pecl/Makefile ext PECL=realpath_turbo
+ - colormake -f travis/pecl/Makefile php
+ - colormake -f travis/pecl/Makefile ext PECL=realpath_turbo
 
 script:
- - make -f travis/pecl/Makefile test
+ - colormake -f travis/pecl/Makefile test
