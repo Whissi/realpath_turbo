@@ -39,6 +39,7 @@ workaround:
 wget -qO- https://github.com/Whissi/realpath_turbo/archive/master.tar.gz | tar -xz
 cd realpath_turbo-master/
 
+phpize
 ./configure
 make
 make test NO_INTERACTION=1; echo $?
@@ -49,6 +50,7 @@ make "INSTALL=$(pwd)/build/shtool install -c --mode=0644" install
 #php5enmod realpath_turbo
 echo -e "; priority=20\nextension=realpath_turbo.so" > /etc/php/7.0/mods-available/realpath_turbo.ini
 phpenmod realpath_turbo
+php -m | grep realpath_turbo
 ```
 
 ## Configuration
