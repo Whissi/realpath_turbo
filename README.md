@@ -42,8 +42,8 @@ cd realpath_turbo-master/
 phpize
 ./configure
 make
-make test NO_INTERACTION=1; echo $?
-make "INSTALL=$(pwd)/build/shtool install -c --mode=0644" install
+make test NO_INTERACTION=1
+make install
 
 # PHP 5.*
 #echo -e "; priority=20\nextension=realpath_turbo.so" > /etc/php5/mods-available/realpath_turbo.ini
@@ -51,6 +51,7 @@ make "INSTALL=$(pwd)/build/shtool install -c --mode=0644" install
 echo -e "; priority=20\nextension=realpath_turbo.so" > /etc/php/7.0/mods-available/realpath_turbo.ini
 phpenmod realpath_turbo
 php -m | grep realpath_turbo
+echo 'realpath_turbo is not working yet, see the README for configuration instructions!'
 ```
 
 ## Configuration
