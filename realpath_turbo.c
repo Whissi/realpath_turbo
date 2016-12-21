@@ -105,6 +105,8 @@ PHP_RINIT_FUNCTION(realpath_turbo)
 #endif
 		efree(disabled_functions_new);
 	}
+
+	return SUCCESS;
 }
 
 PHP_MINIT_FUNCTION(realpath_turbo)
