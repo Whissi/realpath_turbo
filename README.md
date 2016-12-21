@@ -45,6 +45,7 @@ workaround:
    $ phpize
    $ ./configure
    $ make
+   $ make test NO_INTERACTION=1
    # make install
    ```
 
