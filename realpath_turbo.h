@@ -8,7 +8,7 @@
 # include "config.h"
 #endif
 
-#define REALPATH_TURBO_VERSION "2.0.0 RC 2"
+#define REALPATH_TURBO_VERSION "2.0.0"
 #define REALPATH_TURBO_EXTNAME "realpath_turbo"
 
 extern zend_module_entry realpath_turbo_module_entry;
