@@ -1,4 +1,4 @@
 [submodule "travis-pecl"]
 	path = travis/pecl
-	url = https://github.com/whissi/travis-pecl.git
-	branch = for-upstream
+	url = https://github.com/m6w6/travis-pecl.git
+	branch = master
