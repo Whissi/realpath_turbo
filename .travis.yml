@@ -17,6 +17,7 @@ env:
  - PHP=7.1 enable_debug=no enable_maintainer_zts=no
  - PHP=7.2 enable_debug=no enable_maintainer_zts=no
  - PHP=7.3 enable_debug=no enable_maintainer_zts=no
+ - PHP=7.4 enable_debug=no enable_maintainer_zts=no
  - PHP=5.4 enable_debug=yes enable_maintainer_zts=no
  - PHP=5.5 enable_debug=yes enable_maintainer_zts=no
  - PHP=5.6 enable_debug=yes enable_maintainer_zts=no
@@ -24,6 +25,7 @@ env:
  - PHP=7.1 enable_debug=yes enable_maintainer_zts=no
  - PHP=7.2 enable_debug=yes enable_maintainer_zts=no
  - PHP=7.3 enable_debug=yes enable_maintainer_zts=no
+ - PHP=7.4 enable_debug=yes enable_maintainer_zts=no
  - PHP=5.4 enable_debug=no enable_maintainer_zts=yes
  - PHP=5.5 enable_debug=no enable_maintainer_zts=yes
  - PHP=5.6 enable_debug=no enable_maintainer_zts=yes
@@ -31,6 +33,7 @@ env:
  - PHP=7.1 enable_debug=no enable_maintainer_zts=yes
  - PHP=7.2 enable_debug=no enable_maintainer_zts=yes
  - PHP=7.3 enable_debug=no enable_maintainer_zts=yes
+ - PHP=7.4 enable_debug=no enable_maintainer_zts=yes
  - PHP=5.4 enable_debug=yes enable_maintainer_zts=yes
  - PHP=5.5 enable_debug=yes enable_maintainer_zts=yes
  - PHP=5.6 enable_debug=yes enable_maintainer_zts=yes
@@ -38,6 +41,7 @@ env:
  - PHP=7.1 enable_debug=yes enable_maintainer_zts=yes
  - PHP=7.2 enable_debug=yes enable_maintainer_zts=yes
  - PHP=7.3 enable_debug=yes enable_maintainer_zts=yes
+ - PHP=7.4 enable_debug=yes enable_maintainer_zts=yes
 
 before_script:
  - make -f travis/pecl/Makefile php
