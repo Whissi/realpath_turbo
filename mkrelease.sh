@@ -77,6 +77,13 @@ if [[ -f "${WORKING_DIR}/${0##*/}" ]] ; then
 	rm "${WORKING_DIR}/${0##*/}"
 fi
 
+echo ">>> Removing unnecessary files"
+rm "${WORKING_DIR}/.gitignore" || die ${EX_ERROR} "Failed to delete .gitignore!"
+rm "${WORKING_DIR}/.gitmodules" || die ${EX_ERROR} "Failed to delete .gitmodules!"
+rm "${WORKING_DIR}/.travis.yml" || die ${EX_ERROR} "Failed to delete .travis.yml!"
+rm "${WORKING_DIR}/gen_travis_yml.php" || die ${EX_ERROR} "Failed to delete gen_travis_yml.php!"
+rm -rf "${WORKING_DIR}/travis/" || die ${EX_ERROR} "Failed to delete travis/!"
+
 echo ">>> Creating Changelog"
 git log >"${WORKING_DIR}/ChangeLog"
 if [[ $? -ne 0 ]] ; then
