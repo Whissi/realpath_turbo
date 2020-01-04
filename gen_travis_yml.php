@@ -22,7 +22,7 @@ $gen = include "./travis/pecl/gen-matrix.php";
 $cur = "7.4";
 $env = $gen([
 	// most useful for all additional versions except current
-	"PHP"                   => ["5.6", "7.0", "7.1", "7.2", "7.4", "master"],
+	"PHP"                   => ["5.6", "7.0", "7.1", "7.2", "7.3", "7.4", "master"],
 	"enable_debug",
 	"enable_maintainer_zts"
 ]);
