@@ -103,6 +103,13 @@ PHP_RINIT_FUNCTION(realpath_turbo)
 		zend_string_release(ini_name);
 		zend_string_release(ini_value);
 #endif
+
+#if PHP_MAJOR_VERSION < 8
+        zend_disable_function("link", sizeof("link")-1 TSRMLS_CC);
+        zend_disable_function("symlink", sizeof("symlink")-1 TSRMLS_CC);
+#else
+        /* TODO zend_disable_functions(risky_functions); */
+#endif
 		efree(disabled_functions_new);
 	}
 
