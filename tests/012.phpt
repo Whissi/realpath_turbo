@@ -25,9 +25,9 @@ try {
 var_dump(@unlink($l));
 
 // Ensure the touch function is also disable
-$l = __DIR__ . '/testlink';
+$l = __DIR__ . '/testtouch';
 try {
-    @touch(PHP_BINARY, $l);
+    @touch($l);
 } catch (Error $e) {
     // Expected exception on PHP 8, else only a warning
 	if (!strpos($e->getMessage(), 'undefined function touch')) {
