@@ -10,6 +10,20 @@ realpath_turbo.disable_dangerous_functions=0
 <?php
 var_dump(ini_get("realpath_turbo.disable_dangerous_functions"));
 var_dump(ini_get("disable_functions"));
+
+// Ensure the symlink function is not disable
+$l = __DIR__ . '/testlink';
+try {
+    symlink(PHP_BINARY, $l);
+} catch (Error $e) {
+    // Expected exception on PHP 8, else only a warning
+	if (!strpos($e->getMessage(), 'undefined function symlink')) {
+		echo $e->getMessage() . "\n";
+	}
+}
+var_dump(unlink($l));
+
 --EXPECTF--
 string(1) "0"
 string(4) "date"
+bool(true)
