@@ -117,8 +117,28 @@ PHP_MINIT_FUNCTION(realpath_turbo)
 
 	if (INI_BOOL("realpath_turbo.disable_dangerous_functions")) {
 #if PHP_MAJOR_VERSION < 8
-		zend_disable_function("link", sizeof("link")-1 TSRMLS_CC);
-		zend_disable_function("symlink", sizeof("symlink")-1 TSRMLS_CC);
+		/* pasted from zend_disable_functions in PHP 8 */
+		const char *s = NULL, *e = risky_functions;
+		while (*e) {
+			switch (*e) {
+				case ' ':
+				case ',':
+					if (s) {
+						zend_disable_function((char *)s, e - s TSRMLS_CC);
+						s = NULL;
+					}
+					break;
+				default:
+					if (!s) {
+						s = e;
+					}
+					break;
+			}
+			e++;
+		}
+		if (s) {
+			zend_disable_function((char *)s, e - s TSRMLS_CC);
+		}
 #else
 		zend_disable_functions(risky_functions);
 #endif
