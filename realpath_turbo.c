@@ -2,8 +2,10 @@
 #include "realpath_turbo_private.h"
 
 static zend_function_entry realpath_turbo_functions[] = {
-	{NULL, NULL, NULL}
+	PHP_FE_END
 };
+
+static const char *risky_functions = "link,symlink";
 
 zend_module_entry realpath_turbo_module_entry = {
 	STANDARD_MODULE_HEADER,
@@ -44,7 +46,6 @@ PHP_RINIT_FUNCTION(realpath_turbo)
 #endif
 	char *disabled_functions = INI_STR("disable_functions");
 	char *disabled_functions_new;
-	char *risky_functions = "link,symlink";
 	zend_bool do_disable_dangerous_functions = INI_BOOL("realpath_turbo.disable_dangerous_functions");
 #if PHP_MAJOR_VERSION >= 7
 	zend_string *ini_name, *ini_value;
@@ -104,12 +105,6 @@ PHP_RINIT_FUNCTION(realpath_turbo)
 		zend_string_release(ini_value);
 #endif
 
-#if PHP_MAJOR_VERSION < 8
-        zend_disable_function("link", sizeof("link")-1 TSRMLS_CC);
-        zend_disable_function("symlink", sizeof("symlink")-1 TSRMLS_CC);
-#else
-        /* TODO zend_disable_functions(risky_functions); */
-#endif
 		efree(disabled_functions_new);
 	}
 
@@ -118,6 +113,12 @@ PHP_RINIT_FUNCTION(realpath_turbo)
 
 PHP_MINIT_FUNCTION(realpath_turbo)
 {
+#if PHP_MAJOR_VERSION < 8
+        zend_disable_function("link", sizeof("link")-1 TSRMLS_CC);
+        zend_disable_function("symlink", sizeof("symlink")-1 TSRMLS_CC);
+#else
+        zend_disable_functions(risky_functions);
+#endif
 	REGISTER_INI_ENTRIES();
 	return SUCCESS;
 }

@@ -10,13 +10,20 @@ realpath_turbo.disable_dangerous_functions=1
 <?php
 var_dump(ini_get("realpath_turbo.disable_dangerous_functions"));
 var_dump(ini_get("disable_functions"));
+
+// Ensure the symlink function is properly disable
 $l = __DIR__ . '/testlink';
-var_dump(symlink(PHP_BINARY, $l));
+try {
+    @symlink(PHP_BINARY, $l);
+} catch (Error $e) {
+    // Expected exception on PHP 8, else only a warning
+	if (!strpos($e->getMessage(), 'undefined function symlink')) {
+		echo $e->getMessage() . "\n";
+	}
+}
+// If symlink is properly disable, will fail as file doesn't exist
 var_dump(@unlink($l));
 --EXPECTF--
 string(1) "1"
 string(17) "link,symlink,date"
-
-Warning: symlink() has been disabled for security reasons in %s
-NULL
 bool(false)
