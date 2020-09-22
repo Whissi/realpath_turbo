@@ -2,8 +2,10 @@
 #include "realpath_turbo_private.h"
 
 static zend_function_entry realpath_turbo_functions[] = {
-	{NULL, NULL, NULL}
+	PHP_FE_END
 };
+
+static const char *risky_functions = "link,symlink";
 
 zend_module_entry realpath_turbo_module_entry = {
 	STANDARD_MODULE_HEADER,
@@ -44,7 +46,6 @@ PHP_RINIT_FUNCTION(realpath_turbo)
 #endif
 	char *disabled_functions = INI_STR("disable_functions");
 	char *disabled_functions_new;
-	char *risky_functions = "link,symlink";
 	zend_bool do_disable_dangerous_functions = INI_BOOL("realpath_turbo.disable_dangerous_functions");
 #if PHP_MAJOR_VERSION >= 7
 	zend_string *ini_name, *ini_value;
@@ -103,6 +104,7 @@ PHP_RINIT_FUNCTION(realpath_turbo)
 		zend_string_release(ini_name);
 		zend_string_release(ini_value);
 #endif
+
 		efree(disabled_functions_new);
 	}
 
@@ -112,6 +114,35 @@ PHP_RINIT_FUNCTION(realpath_turbo)
 PHP_MINIT_FUNCTION(realpath_turbo)
 {
 	REGISTER_INI_ENTRIES();
+
+	if (INI_BOOL("realpath_turbo.disable_dangerous_functions")) {
+#if PHP_MAJOR_VERSION < 8
+		/* pasted from zend_disable_functions in PHP 8 */
+		const char *s = NULL, *e = risky_functions;
+		while (*e) {
+			switch (*e) {
+				case ' ':
+				case ',':
+					if (s) {
+						zend_disable_function((char *)s, e - s TSRMLS_CC);
+						s = NULL;
+					}
+					break;
+				default:
+					if (!s) {
+						s = e;
+					}
+					break;
+			}
+			e++;
+		}
+		if (s) {
+			zend_disable_function((char *)s, e - s TSRMLS_CC);
+		}
+#else
+		zend_disable_functions(risky_functions);
+#endif
+	}
 	return SUCCESS;
 }
 
