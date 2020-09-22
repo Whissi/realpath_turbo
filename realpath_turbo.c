@@ -113,13 +113,16 @@ PHP_RINIT_FUNCTION(realpath_turbo)
 
 PHP_MINIT_FUNCTION(realpath_turbo)
 {
-#if PHP_MAJOR_VERSION < 8
-        zend_disable_function("link", sizeof("link")-1 TSRMLS_CC);
-        zend_disable_function("symlink", sizeof("symlink")-1 TSRMLS_CC);
-#else
-        zend_disable_functions(risky_functions);
-#endif
 	REGISTER_INI_ENTRIES();
+
+	if (INI_BOOL("realpath_turbo.disable_dangerous_functions")) {
+#if PHP_MAJOR_VERSION < 8
+		zend_disable_function("link", sizeof("link")-1 TSRMLS_CC);
+		zend_disable_function("symlink", sizeof("symlink")-1 TSRMLS_CC);
+#else
+		zend_disable_functions(risky_functions);
+#endif
+	}
 	return SUCCESS;
 }
 
